@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Downloader API CC | Powered by Python ba yun?</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Exo:400,700" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Exo', sans-serif;
+        }
+
+        .context {
+            width: 100%;
+            position: absolute;
+            top: 50vh;
+            text-align: center;
+        }
+
+        .context h1 {
+            color: #fff;
+            font-size: 50px;
+        }
+
+        .area {
+            background: #4e54c8;
+            background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .circles li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+        }
+
+        .circles li:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+
+        .code-block {
+            position: relative;
+            margin-bottom: 20px;
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 5px;
+            color: #fff;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background: #45a049;
+        }
+
+        .watermark {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.5);
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 100;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900">
+
+    <div class="context">
+        <h1>YouTube Downloader API CC</h1>
+        <h3 class="text-white">Powered by Python | Sure python ba yan?</h3>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python Logo" class="mx-auto w-32 my-4">
+    </div>
+
+    <div class="area">
+        <ul class="circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+
+    <section class="text-white p-8 mt-10 text-center">
+        <h2 class="text-3xl mb-4">API Documentation</h2>
+        <p>To use the YouTube Downloader API, send a GET request to the following URL with the required parameters:</p>
+        <code class="block mt-4 mb-8 bg-gray-800 p-4 rounded">
+            https://<strong><span id="currentHost"></span></strong>/ytdl?url=<strong>[video_url]</strong>&type=<strong>[mp3/mp4]</strong>
+        </code>
+
+        <h3 class="text-xl mt-8">How to Get MP3 and MP4:</h3>
+        <p>If you want to download the video as an MP3 or MP4, use the "type" parameter in the request:</p>
+        <ul class="text-left ml-8 mt-4 text-lg">
+            <li>For MP3: <strong>type=mp3</strong></li>
+            <li>For MP4: <strong>type=mp4</strong></li>
+        </ul>
+
+        <h3 class="text-xl mt-8">Supported Methods:</h3>
+
+        <div class="code-block">
+            <button class="copy-btn" data-clipboard-target="#nodejs-code">Copy</button>
+            <h4 class="text-xl">Node.js Example</h4>
+            <pre id="nodejs-code">
+const axios = require('axios');
+
+axios.get('https://${window.location.hostname}/ytdl?url=<video_url>&type=mp4')
+    .then(response => {
+        console.log(response.data);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+            </pre>
+        </div>
+
+        <div class="code-block">
+            <button class="copy-btn" data-clipboard-target="#python-code">Copy</button>
+            <h4 class="text-xl">Python Example</h4>
+            <pre id="python-code">
+import requests
+
+url = 'https://${window.location.hostname}/ytdl?url=<video_url>&type=mp4'
+response = requests.get(url)
+print(response.json())
+            </pre>
+        </div>
+
+        <div class="code-block">
+            <button class="copy-btn" data-clipboard-target="#curl-code">Copy</button>
+            <h4 class="text-xl">cURL Example</h4>
+            <pre id="curl-code">
+curl "https://${window.location.hostname}/ytdl?url=<video_url>&type=mp4"
+            </pre>
+        </div>
+
+        <div class="code-block">
+            <button class="copy-btn" data-clipboard-target="#php-code">Copy</button>
+            <h4 class="text-xl">PHP Example</h4>
+            <pre id="php-code">
+<?php
+$url = 'https://${window.location.hostname}/ytdl?url=<video_url>&type=mp4';
+$response = file_get_contents($url);
+echo $response;
+?>
+            </pre>
+        </div>
+
+        <div class="code-block">
+            <button class="copy-btn" data-clipboard-target="#java-code">Copy</button>
+            <h4 class="text-xl">Java Example</h4>
+            <pre id="java-code">
+import java.io.*;
+import java.net.*;
+
+public class YouTubeDownloader {
+    public static void main(String[] args) throws IOException {
+        String url = "https://${window.location.hostname}/ytdl?url=<video_url>&type=mp4";
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        System.out.println(response.toString());
+    }
+}
+            </pre>
+        </div>
+
+        <p class="mt-8">For more details please contact Jonell Hutchin Magallanes in Facebook for if you encounter errors thank you 🥰</p>
+    </section>
+
+    <div class="watermark">
+        Salamat sa Owner ng CCPRAKJIK 19 na commands ko
+    </div>
+
+    <script>
+        new ClipboardJS('.copy-btn');
+
+        // Set the current host dynamically
+        document.getElementById('currentHost').textContent = window.location.hostname;
+    </script>
+
+</body>
+
+</html>
