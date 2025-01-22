@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Downloader API CC | Powered by Python ba yun?</title>
+    <title>YouTube Downloader API CC | Powered by Python ba yan?</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Exo:400,700" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
@@ -16,18 +16,27 @@
 
         body {
             font-family: 'Exo', sans-serif;
+            overflow-x: hidden;
         }
 
         .context {
             width: 100%;
             position: absolute;
             top: 50vh;
+            left: 50%;
+            transform: translateX(-50%);
             text-align: center;
+            color: white;
         }
 
         .context h1 {
-            color: #fff;
-            font-size: 50px;
+            font-size: 3vw;
+            color: white;
+        }
+
+        .context h3 {
+            font-size: 1.5rem;
+            color: white;
         }
 
         .area {
@@ -113,13 +122,49 @@
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 16px;
+            font-size: 1rem;
             color: rgba(255, 255, 255, 0.5);
             background-color: rgba(0, 0, 0, 0.5);
             padding: 10px;
             border-radius: 5px;
             z-index: 100;
             font-weight: bold;
+        }
+
+        /* Make sure content fits across different screen sizes */
+        @media screen and (max-width: 768px) {
+            .context h1 {
+                font-size: 8vw;
+            }
+
+            .context h3 {
+                font-size: 1rem;
+            }
+
+            .copy-btn {
+                padding: 4px 8px;
+                font-size: 0.8rem;
+            }
+
+            .code-block pre {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* For small mobile screens */
+        @media screen and (max-width: 480px) {
+            .context h1 {
+                font-size: 10vw;
+            }
+
+            .context h3 {
+                font-size: 0.8rem;
+            }
+
+            .watermark {
+                font-size: 0.8rem;
+                padding: 8px;
+            }
         }
     </style>
 </head>
@@ -128,8 +173,9 @@
 
     <div class="context">
         <h1>YouTube Downloader API CC</h1>
-        <h3 class="text-white">Powered by Python | Sure python ba yan?</h3>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python Logo" class="mx-auto w-32 my-4">
+        <h3>Powered by Python | Python ba yan sure?</h3>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python Logo"
+            class="mx-auto w-32 my-4">
     </div>
 
     <div class="area">
@@ -240,7 +286,7 @@ public class YouTubeDownloader {
             </pre>
         </div>
 
-        <p class="mt-8">For more details please contact Jonell Hutchin Magallanes in Facebook for if you encounter errors thank you 🥰</p>
+        <p class="mt-8">For more details, check out the source code and contribute on GitHub!</p>
     </section>
 
     <div class="watermark">
