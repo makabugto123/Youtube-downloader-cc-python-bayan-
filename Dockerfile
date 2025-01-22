@@ -19,4 +19,4 @@ COPY . /app
 EXPOSE 8080 9050
 
 # Start Tor and the application
-CMD service tor start && python server.py
+CMD service tor start && python main.py
