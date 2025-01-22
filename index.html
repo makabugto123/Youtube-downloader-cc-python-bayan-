@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Downloader API CC | Powered by Python ba yan?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>YouTube Downloader API CC | Powered by Python</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Exo:400,700" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
@@ -17,12 +17,13 @@
         body {
             font-family: 'Exo', sans-serif;
             overflow-x: hidden;
+            background-color: #1a202c; /* Dark background */
         }
 
         .context {
             width: 100%;
             position: absolute;
-            top: 50vh;
+            top: 20vh;
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
@@ -30,13 +31,11 @@
         }
 
         .context h1 {
-            font-size: 3vw;
-            color: white;
+            font-size: 6vw; /* Font size responsive to screen size */
         }
 
         .context h3 {
-            font-size: 1.5rem;
-            color: white;
+            font-size: 2rem;
         }
 
         .area {
@@ -67,13 +66,6 @@
             bottom: -150px;
         }
 
-        .circles li:nth-child(1) {
-            left: 25%;
-            width: 80px;
-            height: 80px;
-            animation-delay: 0s;
-        }
-
         @keyframes animate {
             0% {
                 transform: translateY(0) rotate(0deg);
@@ -96,10 +88,6 @@
             border-radius: 5px;
             color: #fff;
             overflow-x: auto;
-        }
-
-        .code-block pre {
-            margin: 0;
         }
 
         .copy-btn {
@@ -131,49 +119,74 @@
             font-weight: bold;
         }
 
-        /* Make sure content fits across different screen sizes */
+        /* Force mobile layout */
         @media screen and (max-width: 768px) {
             .context h1 {
-                font-size: 8vw;
+                font-size: 10vw; /* Larger font on small devices */
+            }
+
+            .context h3 {
+                font-size: 1.2rem;
+            }
+
+            .copy-btn {
+                padding: 6px 12px;
+                font-size: 1rem;
+            }
+
+            .code-block pre {
+                font-size: 1rem;
+            }
+
+            .watermark {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            /* Remove any unwanted large spacing */
+            body {
+                padding: 0;
+            }
+
+            .context {
+                margin-top: 5vh;
+            }
+        }
+
+        /* Small mobile screens */
+        @media screen and (max-width: 480px) {
+            .context h1 {
+                font-size: 12vw;
             }
 
             .context h3 {
                 font-size: 1rem;
             }
 
-            .copy-btn {
-                padding: 4px 8px;
-                font-size: 0.8rem;
-            }
-
-            .code-block pre {
-                font-size: 0.8rem;
-            }
-        }
-
-        /* For small mobile screens */
-        @media screen and (max-width: 480px) {
-            .context h1 {
-                font-size: 10vw;
-            }
-
-            .context h3 {
-                font-size: 0.8rem;
-            }
-
             .watermark {
                 font-size: 0.8rem;
-                padding: 8px;
+                padding: 6px;
+            }
+
+            /* Make code blocks more readable */
+            .code-block pre {
+                font-size: 0.9rem;
+            }
+
+            /* Adjust padding and margins */
+            .context h3, .copy-btn {
+                margin: 0;
+                padding: 0;
             }
         }
     </style>
 </head>
 
-<body class="bg-gray-900">
+<body>
 
     <div class="context">
         <h1>YouTube Downloader API CC</h1>
-        <h3>Powered by Python | Python ba yan sure?</h3>
+        <h3>Powered by Python</h3>
         <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python Logo"
             class="mx-auto w-32 my-4">
     </div>
@@ -294,12 +307,9 @@ public class YouTubeDownloader {
     </div>
 
     <script>
-        new ClipboardJS('.copy-btn');
-
         // Set the current host dynamically
-        document.getElementById('currentHost').textContent = window.location.hostname;
+        document.getElementById("currentHost").textContent = window.location.hostname;
     </script>
-
 </body>
 
 </html>
