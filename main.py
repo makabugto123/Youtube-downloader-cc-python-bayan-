@@ -77,27 +77,23 @@ class MyHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({'error': 'Not Found'}).encode())
 
     def download_and_convert(self, url, timestamp, media_type):
+        cookies_file = 'cookies.txt'
+        ydl_opts = {
+            'outtmpl': f'downloads/{timestamp}.%(ext)s',
+            'quiet': True,
+            'concurrent_fragment_downloads': 4,
+            'noplaylist': True,
+            'cookiefile': cookies_file if os.path.exists(cookies_file) else None,
+        }
         if media_type == 'mp3':
-            ydl_opts = {
-                'outtmpl': f'downloads/{timestamp}.%(ext)s',
-                'format': 'bestaudio/best',
-                'postprocessors': [{
-                    'key': 'FFmpegExtractAudio',
-                    'preferredcodec': 'mp3',
-                    'preferredquality': '192',
-                }],
-                'noplaylist': True,
-                'quiet': True,
-                'concurrent_fragment_downloads': 4,
-            }
+            ydl_opts['format'] = 'bestaudio/best'
+            ydl_opts['postprocessors'] = [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }]
         elif media_type == 'mp4':
-            ydl_opts = {
-                'outtmpl': f'downloads/{timestamp}.%(ext)s',
-                'format': 'bestvideo+bestaudio/best',
-                'noplaylist': True,
-                'quiet': True,
-                'concurrent_fragment_downloads': 4,
-            }
+            ydl_opts['format'] = 'bestvideo+bestaudio/best'
         else:
             raise ValueError("Unsupported media type")
 
@@ -108,7 +104,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
     def delete_file(self, timestamp, media_type):
         file_path = f'downloads/{timestamp}.{media_type}'
-        time.sleep(300)  # Wait for 5 minutes
+        time.sleep(300)
         if os.path.exists(file_path):
             os.remove(file_path)
 
