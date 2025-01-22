@@ -9,7 +9,13 @@ import threading
 
 class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path.startswith('/ytdl'):
+        if self.path == '/':
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            with open('index.html', 'rb') as f:
+                self.wfile.write(f.read())
+        elif self.path.startswith('/ytdl'):
             query = urllib.parse.urlparse(self.path).query
             params = urllib.parse.parse_qs(query)
             if 'url' in params and 'type' in params:
