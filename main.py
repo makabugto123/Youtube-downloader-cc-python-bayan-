@@ -21,7 +21,7 @@ class MyHandler(BaseHTTPRequestHandler):
                     future = executor.submit(self.download_and_convert, video_url, timestamp, media_type)
                     media_filename = future.result()
 
-                download_url = f"{self.headers.get('Host')}/download/{timestamp}.{media_type}"
+                download_url = f"https://{self.headers.get('Host')}/download/{timestamp}.{media_type}"
                 title = media_filename.split('.')[0]
 
                 response_data = {
