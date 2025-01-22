@@ -25,7 +25,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 timestamp = str(int(time.time()))
 
                 with concurrent.futures.ThreadPoolExecutor() as executor:
-                    future = executor.submit(self.download_media, video_url, timestamp, media_type)
+                    future = executor.submit(self.download_and_convert, video_url, timestamp, media_type)
                     media_filename = future.result()
 
                 try:
@@ -35,7 +35,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 except Exception:
                     title = media_filename.split('.')[0]
 
-                download_url = f"https://{self.headers.get('Host')}/download/{media_filename}"
+                download_url = f"https://{self.headers.get('Host')}/download/{timestamp}.{media_type}"
 
                 response_data = {
                     'url': video_url,
@@ -49,17 +49,16 @@ class MyHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps(response_data).encode())
 
-                # Schedule file deletion
-                threading.Thread(target=self.delete_file, args=(media_filename,)).start()
+                threading.Thread(target=self.delete_file, args=(timestamp, media_type)).start()
             else:
                 self.send_response(400)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps({'error': 'Missing URL or type parameter'}).encode())
         elif self.path.startswith('/download/'):
-            file_name = self.path.split('/')[-1]
-            file_path = f'downloads/{file_name}'
-            media_type = file_name.split('.')[-1]
+            timestamp = self.path.split('/')[-1].split('.')[0]
+            media_type = self.path.split('.')[-1]
+            file_path = f'downloads/{timestamp}.{media_type}'
 
             if os.path.exists(file_path):
                 if media_type == 'mp3':
@@ -75,7 +74,7 @@ class MyHandler(BaseHTTPRequestHandler):
                     self.wfile.write(json.dumps({'error': 'Unsupported media type'}).encode())
                     return
 
-                self.send_header('Content-Disposition', f'inline; filename="{file_name}"')
+                self.send_header('Content-Disposition', f'inline; filename="{timestamp}.{media_type}"')
                 self.end_headers()
                 with open(file_path, 'rb') as file:
                     self.wfile.write(file.read())
@@ -90,7 +89,7 @@ class MyHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps({'error': 'Not Found'}).encode())
 
-    def download_media(self, url, timestamp, media_type):
+    def download_and_convert(self, url, timestamp, media_type):
         cookies_file = 'cookies.txt'
         ydl_opts = {
             'outtmpl': f'downloads/{timestamp}.%(ext)s',
@@ -108,25 +107,20 @@ class MyHandler(BaseHTTPRequestHandler):
             }]
         elif media_type == 'mp4':
             ydl_opts['format'] = 'bestvideo+bestaudio/best'
-        else:
-            raise ValueError("Unsupported media type")
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info_dict = ydl.extract_info(url, download=True)
-            downloaded_file = ydl.prepare_filename(info_dict)
-            final_file = f"downloads/{timestamp}.{media_type}"
+            ydl.download([url])
+            for file in os.listdir('downloads'):
+                if file.startswith(timestamp) and file.endswith('.webm'):
+                    os.rename(f'downloads/{file}', f'downloads/{timestamp}.mp4')
 
-            # If the downloaded file isn't already in the required format, rename it
-            if not downloaded_file.endswith(f".{media_type}"):
-                os.rename(downloaded_file, final_file)
-            return os.path.basename(final_file)
+        return f"{timestamp}.{media_type}"
 
-    def delete_file(self, file_name):
-        file_path = f'downloads/{file_name}'
-        time.sleep(300)  # Wait for 5 minutes
+    def delete_file(self, timestamp, media_type):
+        file_path = f'downloads/{timestamp}.{media_type}'
+        time.sleep(300)
         if os.path.exists(file_path):
             os.remove(file_path)
-            print(f"Deleted file: {file_path}")
 
 def run(server_class=HTTPServer, handler_class=MyHandler, port=8080):
     server_address = ('', port)
