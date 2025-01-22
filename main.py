@@ -6,6 +6,7 @@ import time
 import json
 import concurrent.futures
 import threading
+import requests
 
 class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -27,8 +28,14 @@ class MyHandler(BaseHTTPRequestHandler):
                     future = executor.submit(self.download_and_convert, video_url, timestamp, media_type)
                     media_filename = future.result()
 
+                try:
+                    api_response = requests.get(f'https://ccprojectapis.ddns.net/api/music?url={video_url}')
+                    api_data = api_response.json()
+                    title = api_data['data']['title']
+                except Exception:
+                    title = media_filename.split('.')[0]
+
                 download_url = f"https://{self.headers.get('Host')}/download/{timestamp}.{media_type}"
-                title = media_filename.split('.')[0]
 
                 response_data = {
                     'url': video_url,
