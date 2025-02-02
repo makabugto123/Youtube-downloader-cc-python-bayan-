@@ -14,6 +14,7 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 # Copy the application code
 WORKDIR /app
 COPY . /app
+COPY index.html /app/index.html
 
 # Expose ports for the app and Tor
 EXPOSE 8080 9050
